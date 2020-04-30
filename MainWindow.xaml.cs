@@ -14,12 +14,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+/* Do zrobienia:
+ *  - dodaj wpis - mechanika i okienko
+ *  - dodaj utwór z YT - mech i okno
+ *  - edycja wpisu
+ *  - usuwanie wpisów
+ *  
+ *  
+ *  - dokumentacja
+*/
+
 namespace BibliotekaMultimediow
 {
     /// <summary>
     /// Logika interakcji dla klasy MainWindow.xaml
     /// </summary>
-    /// 
     public enum CurrentView { utwory, albumy, wykonawcy}
 
     public partial class MainWindow : Window
@@ -33,19 +42,8 @@ namespace BibliotekaMultimediow
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
-            var query =
-            from utwor in db.Muzyka
-            where utwor.CzyUlubione == false
-            orderby utwor.Nazwa
-            select new { utwor.Nazwa };
-
-            dataGrid1.ItemsSource = query.ToList();
-
+            Show_Utwory();
             cv = CurrentView.utwory;
-
-
-            
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -104,6 +102,15 @@ namespace BibliotekaMultimediow
             
         }
 
+        private void Button_Click_DodajYT(object sender, RoutedEventArgs e)
+        {
+            DodajUtworYTWindow win = new DodajUtworYTWindow();
+            win.ShowDialog();
+            Show_Utwory();
+                   
+        }
+
+
         private void Button_Click_Edytuj(object sender, RoutedEventArgs e)
         {
             
@@ -114,7 +121,7 @@ namespace BibliotekaMultimediow
            var query =
            from plik in db.Muzyka
            orderby plik.Nazwa
-           select new { plik.Nazwa, wykonawca = plik.WykonawcaId, plik.CzasTrwania, album = plik.AlbumId, plik.DataDodania };
+           select new { Tytul = plik.Nazwa, wykonawca = plik.WykonawcaId, plik.CzasTrwania, album = plik.AlbumId, plik.DataDodania };
 
            dataGrid1.ItemsSource = query.ToList();
 

@@ -201,6 +201,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DodajUtworYTWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DodajWykonawceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,6 +216,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DodajUtworYTWindow.xaml.cs">
+      <DependentUpon>DodajUtworYTWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DodajWykonawceWindow.xaml.cs">
       <DependentUpon>DodajWykonawceWindow.xaml</DependentUpon>
@@ -226,6 +233,10 @@
     <Compile Include="Migrations\20200430110251_MyFirstMigration.cs" />
     <Compile Include="Migrations\20200430110251_MyFirstMigration.designer.cs">
       <DependentUpon>20200430110251_MyFirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20200430182034_test.cs" />
+    <Compile Include="Migrations\20200430182034_test.designer.cs">
+      <DependentUpon>20200430182034_test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\BazaDanychModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

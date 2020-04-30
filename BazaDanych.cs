@@ -17,7 +17,6 @@ namespace BibliotekaMultimediow
         public DbSet<Utwor> Muzyka { get; set; }
         public DbSet<Wykonawca> Wykonawcy { get; set; }
         public DbSet<Album> Albumy { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=bazadanych.db");
     }
@@ -50,6 +49,7 @@ namespace BibliotekaMultimediow
     {
         public int AlbumId { get; set; }
         public string Nazwa { get; set; }
+        public int Rok { get; set; }
 
     }
 

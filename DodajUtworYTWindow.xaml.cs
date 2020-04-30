@@ -15,25 +15,14 @@ using System.Windows.Shapes;
 namespace BibliotekaMultimediow
 {
     /// <summary>
-    /// Logika interakcji dla klasy DodajUtworWindow.xaml
+    /// Logika interakcji dla klasy DodajUtworYTWindow.xaml
     /// </summary>
-    public partial class DodajUtworWindow : Window
+    public partial class DodajUtworYTWindow : Window
     {
         private BazaDanych db = new BazaDanych();
-        public DodajUtworWindow()
+        public DodajUtworYTWindow()
         {
             InitializeComponent();
-
-            WykonawcyComboBox();
-            //WykonawcyLista.SelectedValuePath = db.Tables[0].Columns["ZoneId"].ToString();
-        }
-
-
-        public void WykonawcyComboBox()
-        {
-            var result = from w in db.Wykonawcy
-                         select w.Nazwa;
-            WykonawcyLista.ItemsSource = result.ToArray();
         }
 
         public Thickness DocumentMargin
@@ -50,8 +39,15 @@ namespace BibliotekaMultimediow
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            Utwor u = new Utwor { Nazwa = NazwaTextBox.Text, CzyUlubione = false, DataDodania = DateTime.Now };
-            
+            // Tutaj jakieś funkcje z połącznia z YT API
+            // ewentualnie czy można zrobić od razu po wpisaniu utworu jakiś podglą albo coś
+
+
+            //-------------------------------------------
+
+
+            Utwor u = new Utwor { /*tutaj atrybuty dodawanego utworu*/  };
+
             db.Add(u);
             db.SaveChanges();
 
@@ -85,7 +81,6 @@ namespace BibliotekaMultimediow
 
             // All dependency objects are valid
         }
-    
 
     }
 }
