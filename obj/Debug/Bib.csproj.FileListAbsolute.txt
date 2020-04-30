@@ -1,0 +1,14 @@
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\Bib.exe.config
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\Bib.exe
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\Bib.pdb
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.csprojAssemblyReference.cache
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\MainWindow.g.cs
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\App.g.cs
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib_MarkupCompile.cache
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib_MarkupCompile.lref
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\MainWindow.baml
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.g.resources
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.Properties.Resources.resources
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.csproj.GenerateResource.cache
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.exe
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\Bib.pdb
