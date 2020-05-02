@@ -23,11 +23,15 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"  Content="Muzyka" Click="Button_Click_Utwory"></Button>
-            <Button Grid.Column="1" Content="Albumy" Click="Button_Click_Album"></Button>
+            <Button Grid.Column="0"  Content="Utwory" Click="Button_Click_Utwory"></Button>
+            <Button Grid.Column="1" Content="Albumy" Click="Button_Click_Album" ></Button>
             <Button Grid.Column="2" Content="Wykonawcy" Click="Button_Click_Wykonawca"></Button>
         </Grid>
-        <DataGrid Grid.Row="1" Grid.Column="1" Name="dataGrid1" />
+
+        <DataGrid  Grid.Row="1" Grid.Column="0" Name="dataGrid1" Background ="WhiteSmoke" CanUserDeleteRows="False" AutoGenerateColumns="False" MinColumnWidth="50" MaxWidth="800">
+
+        </DataGrid>  
+
 
         <Grid Grid.Row ="2">
             <Grid.ColumnDefinitions>
@@ -38,7 +42,6 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="Dodaj YT" Click="Button_Click_DodajYT"></Button>
             <Button Grid.Column="2" Content="Dodaj" Click="Button_Click_Dodaj"></Button>
-            <Button Grid.Column="3" Content="Edytuj" Click="Button_Click_Edytuj"></Button>
         </Grid>
 
     </Grid>

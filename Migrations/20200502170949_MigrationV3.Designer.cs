@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekaMultimediow.Migrations
 {
     [DbContext(typeof(BazaDanych))]
-    [Migration("20200430110251_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20200502170949_MigrationV3")]
+    partial class MigrationV3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,8 +24,20 @@ namespace BibliotekaMultimediow.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("CzyUlubione")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Ocena")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Rok")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WykonawcaId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("AlbumId");
 
@@ -41,9 +53,6 @@ namespace BibliotekaMultimediow.Migrations
                     b.Property<int>("AlbumId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CzasTrwania")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("CzyUlubione")
                         .HasColumnType("INTEGER");
 
@@ -56,8 +65,8 @@ namespace BibliotekaMultimediow.Migrations
                     b.Property<int>("Ocena")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Rok")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Rok")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UrlPath")
                         .HasColumnType("TEXT");
@@ -67,7 +76,7 @@ namespace BibliotekaMultimediow.Migrations
 
                     b.HasKey("UtworId");
 
-                    b.ToTable("Muzyka");
+                    b.ToTable("Utwory");
                 });
 
             modelBuilder.Entity("BibliotekaMultimediow.Wykonawca", b =>
@@ -76,8 +85,14 @@ namespace BibliotekaMultimediow.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("CzyUlubione")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Ocena")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("WykonawcaId");
 

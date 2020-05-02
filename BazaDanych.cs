@@ -14,7 +14,7 @@ namespace BibliotekaMultimediow
 
     class BazaDanych : DbContext
     {
-        public DbSet<Utwor> Muzyka { get; set; }
+        public DbSet<Utwor> Utwory { get; set; }
         public DbSet<Wykonawca> Wykonawcy { get; set; }
         public DbSet<Album> Albumy { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -25,16 +25,16 @@ namespace BibliotekaMultimediow
     {
         public int UtworId { get; set; }
         public string Nazwa { get; set; }
-        public int CzasTrwania { get; set; }
+        //public int CzasTrwania { get; set; }
         public int WykonawcaId { get; set; }
         public int AlbumId { get; set; }
 
-        [Range(0, 5)]
+        //[Range(0, 5)]
         public int Ocena { get; set; }
         public bool CzyUlubione { get; set; }
         public DateTime DataDodania { get; set; }
-        [Range(1900, 2100)]
-        public int Rok { get; set; }
+
+        public string Rok { get; set; }
         public string UrlPath { get; set; }
     }
 
@@ -42,6 +42,8 @@ namespace BibliotekaMultimediow
     {
         public int WykonawcaId { get; set; }
         public string Nazwa { get; set; }
+        public bool CzyUlubione { get; set; }
+        public int Ocena { get; set; }
 
     }
 
@@ -49,7 +51,10 @@ namespace BibliotekaMultimediow
     {
         public int AlbumId { get; set; }
         public string Nazwa { get; set; }
-        public int Rok { get; set; }
+        public string Rok { get; set; }
+        public int WykonawcaId { get; set; }
+        public bool CzyUlubione { get; set; }
+        public int Ocena { get; set; }
 
     }
 

@@ -209,6 +209,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EdytujUtworWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -223,6 +227,9 @@
     <Compile Include="DodajWykonawceWindow.xaml.cs">
       <DependentUpon>DodajWykonawceWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EdytujUtworWindow.xaml.cs">
+      <DependentUpon>EdytujUtworWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -230,13 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MarginValidationRule.cs" />
-    <Compile Include="Migrations\20200430110251_MyFirstMigration.cs" />
-    <Compile Include="Migrations\20200430110251_MyFirstMigration.designer.cs">
-      <DependentUpon>20200430110251_MyFirstMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20200430182034_test.cs" />
-    <Compile Include="Migrations\20200430182034_test.designer.cs">
-      <DependentUpon>20200430182034_test.cs</DependentUpon>
+    <Compile Include="Migrations\20200502170949_MigrationV3.cs" />
+    <Compile Include="Migrations\20200502170949_MigrationV3.designer.cs">
+      <DependentUpon>20200502170949_MigrationV3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\BazaDanychModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

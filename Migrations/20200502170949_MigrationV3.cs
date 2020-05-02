@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekaMultimediow.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class MigrationV3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,11 @@ namespace BibliotekaMultimediow.Migrations
                 {
                     AlbumId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nazwa = table.Column<string>(nullable: true)
+                    Nazwa = table.Column<string>(nullable: true),
+                    Rok = table.Column<string>(nullable: true),
+                    WykonawcaId = table.Column<int>(nullable: false),
+                    CzyUlubione = table.Column<bool>(nullable: false),
+                    Ocena = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -21,24 +25,23 @@ namespace BibliotekaMultimediow.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Muzyka",
+                name: "Utwory",
                 columns: table => new
                 {
                     UtworId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nazwa = table.Column<string>(nullable: true),
-                    CzasTrwania = table.Column<int>(nullable: false),
                     WykonawcaId = table.Column<int>(nullable: false),
                     AlbumId = table.Column<int>(nullable: false),
                     Ocena = table.Column<int>(nullable: false),
                     CzyUlubione = table.Column<bool>(nullable: false),
                     DataDodania = table.Column<DateTime>(nullable: false),
-                    Rok = table.Column<int>(nullable: false),
+                    Rok = table.Column<string>(nullable: true),
                     UrlPath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Muzyka", x => x.UtworId);
+                    table.PrimaryKey("PK_Utwory", x => x.UtworId);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +50,9 @@ namespace BibliotekaMultimediow.Migrations
                 {
                     WykonawcaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nazwa = table.Column<string>(nullable: true)
+                    Nazwa = table.Column<string>(nullable: true),
+                    CzyUlubione = table.Column<bool>(nullable: false),
+                    Ocena = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,7 +66,7 @@ namespace BibliotekaMultimediow.Migrations
                 name: "Albumy");
 
             migrationBuilder.DropTable(
-                name: "Muzyka");
+                name: "Utwory");
 
             migrationBuilder.DropTable(
                 name: "Wykonawcy");

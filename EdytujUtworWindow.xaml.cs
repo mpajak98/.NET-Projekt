@@ -15,36 +15,46 @@ using System.Windows.Shapes;
 namespace BibliotekaMultimediow
 {
     /// <summary>
-    /// Logika interakcji dla klasy DodajUtworWindow.xaml
+    /// Logika interakcji dla klasy EdytujUtworWindow.xaml
     /// </summary>
-    public partial class DodajUtworWindow : Window
+    public partial class EdytujUtworWindow : Window
     {
+        private int idEdytowanegoUtworu;
         private BazaDanych db = new BazaDanych();
-
-        private List<string> Roczniki  = new List<string> { "nieznany" };
-        public DodajUtworWindow()
+        public EdytujUtworWindow(int id)
         {
             InitializeComponent();
-
             for (int i = 1900; i < 2020; i++)
                 Roczniki.Add(i.ToString());
 
+            idEdytowanegoUtworu = id;
             WykonawcyComboBox();
             AlbumyComboBox();
+            SetStartValues();
             RocznikiLista.ItemsSource = Roczniki;
-            //WykonawcyLista.SelectedValuePath = db.Tables[0].Columns["ZoneId"].ToString();
         }
+           
 
+        private List<string> Roczniki = new List<string> { "nieznany" };
 
+        public void SetStartValues()
+        {
+            Utwor u = db.Utwory.Find(idEdytowanegoUtworu);
+            Wykonawca w = db.Wykonawcy.Find(u.WykonawcaId);
+            Album a= db.Albumy.Find(u.AlbumId);
+            NazwaTextBox.Text = u.Nazwa;
+            WykonawcyLista.Text = w.Nazwa;
+            AlbumyLista.Text = a.Nazwa;
+            RocznikiLista.Text = u.Rok;
+
+        }
         public void WykonawcyComboBox()
         {
             var result = from w in db.Wykonawcy
                          orderby w.Nazwa
                          select w.Nazwa;
-            
             WykonawcyLista.ItemsSource = result.ToArray();
         }
-
 
         public void AlbumyComboBox()
         {
@@ -73,9 +83,9 @@ namespace BibliotekaMultimediow
             {
                 int WykonawcaId = 0, AlbumId = 0;
 
-                if(WykonawcyLista.Text != null )
+                if (WykonawcyLista.Text != null)
                 {
-                    if(! db.Wykonawcy.Any(w => w.Nazwa == WykonawcyLista.Text))
+                    if (!db.Wykonawcy.Any(w => w.Nazwa == WykonawcyLista.Text))
                     {
                         Wykonawca wykonawca = new Wykonawca { Nazwa = WykonawcyLista.Text };
                         db.Add(wykonawca);
@@ -94,7 +104,7 @@ namespace BibliotekaMultimediow
                 }
                 else
                 {
-                    Wykonawca wykonawca = new Wykonawca { Nazwa ="niezanany" };
+                    Wykonawca wykonawca = new Wykonawca { Nazwa = "niezanany" };
                     db.Add(wykonawca);
                     db.SaveChanges();
                     WykonawcaId = wykonawca.WykonawcaId;
@@ -106,7 +116,7 @@ namespace BibliotekaMultimediow
                     {
                         Album album;
                         if (RocznikiLista.Text != null)
-                            album = new Album { Nazwa = AlbumyLista.Text, Rok  = RocznikiLista.Text };
+                            album = new Album { Nazwa = AlbumyLista.Text, Rok = RocznikiLista.Text };
                         else
                             album = new Album { Nazwa = AlbumyLista.Text, Rok = "nieznany" };
                         db.Add(album);
@@ -137,12 +147,16 @@ namespace BibliotekaMultimediow
                     rocznik = RocznikiLista.Text;
                 else
                     rocznik = "nieznany";
-                Utwor u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = WykonawcaId, AlbumId = AlbumId, Rok = rocznik, CzyUlubione = false, DataDodania = DateTime.Now };
 
-                db.Add(u);
+                Utwor u = db.Utwory.Find(idEdytowanegoUtworu);
+                u.Nazwa = NazwaTextBox.Text;
+                u.WykonawcaId = WykonawcaId;
+                u.AlbumId = AlbumId;
+                u.Rok = rocznik;
+                db.Utwory.Update(u);
                 db.SaveChanges();
             }
-            else 
+            else
             {
                 // window is not valid
             }
@@ -152,7 +166,6 @@ namespace BibliotekaMultimediow
             // Dialog box accepted
             DialogResult = true;
         }
-
 
         // Validate all dependency objects in a window
         private bool IsValid(DependencyObject node)
@@ -177,7 +190,8 @@ namespace BibliotekaMultimediow
 
             // All dependency objects are valid
         }
-    
+
 
     }
+
 }
