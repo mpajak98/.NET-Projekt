@@ -23,23 +23,42 @@ namespace BibliotekaMultimediow.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("CzyUlubione")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Ocena")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Rok")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("nieznany");
 
                     b.Property<int>("WykonawcaId")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
 
                     b.HasKey("AlbumId");
 
                     b.ToTable("Albumy");
+
+                    b.HasData(
+                        new
+                        {
+                            AlbumId = 1,
+                            CzyUlubione = false,
+                            Nazwa = "nieznany",
+                            Ocena = 0,
+                            Rok = "nieznany",
+                            WykonawcaId = 1
+                        });
                 });
 
             modelBuilder.Entity("BibliotekaMultimediow.Utwor", b =>
@@ -49,10 +68,14 @@ namespace BibliotekaMultimediow.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AlbumId")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
 
                     b.Property<bool>("CzyUlubione")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("DataDodania")
                         .HasColumnType("TEXT");
@@ -61,16 +84,22 @@ namespace BibliotekaMultimediow.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Ocena")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Rok")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("nieznany");
 
                     b.Property<string>("UrlPath")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("WykonawcaId")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
 
                     b.HasKey("UtworId");
 
@@ -84,17 +113,30 @@ namespace BibliotekaMultimediow.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("CzyUlubione")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Ocena")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.HasKey("WykonawcaId");
 
                     b.ToTable("Wykonawcy");
+
+                    b.HasData(
+                        new
+                        {
+                            WykonawcaId = 1,
+                            CzyUlubione = false,
+                            Nazwa = "nieznany",
+                            Ocena = 0
+                        });
                 });
 #pragma warning restore 612, 618
         }

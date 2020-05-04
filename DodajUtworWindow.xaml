@@ -4,7 +4,7 @@
     x:Class="BibliotekaMultimediow.DodajUtworWindow"
     xmlns:local="clr-namespace:BibliotekaMultimediow"
     Title="Margins"
-    Height="Auto"
+    Height="250"
     Width="300"
     MinHeight="10"
     MinWidth="300"
@@ -13,33 +13,6 @@
     WindowStartupLocation="CenterOwner" 
     FocusManager.FocusedElement="{Binding ElementName=NazwaTextBox}">
     <Grid>
-
-        <Grid.Resources>
-            <Style TargetType="{x:Type Grid}">
-                <Setter Property="Margin" Value="10" />
-            </Style>
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="Margin" Value="0,3,5,5" />
-                <Setter Property="Padding" Value="0,0,0,5" />
-            </Style>
-            <Style TargetType="{x:Type TextBox}">
-                <Setter Property="Margin" Value="0,0,0,5" />
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="{x:Type StackPanel}">
-                <Setter Property="Orientation" Value="Horizontal" />
-                <Setter Property="HorizontalAlignment" Value="Right" />
-            </Style>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Width" Value="70" />
-                <Setter Property="Height" Value="25" />
-                <Setter Property="Margin" Value="5,0,0,0" />
-            </Style>
-        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -53,7 +26,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Left Margin -->
@@ -71,21 +44,48 @@
 
 
 
-        <ComboBox Grid.Column="1" Grid.Row="1"  Name="WykonawcyLista" IsEditable="True"></ComboBox>
+        <ComboBox Grid.Column="1" Grid.Row="1"  Name="WykonawcyLista" IsEditable="True" TextBoxBase.TextChanged="AlbumyWykonawcy">
+
+        </ComboBox>
 
 
         <!-- Right Margin -->
         <Label Grid.Column="0" Grid.Row="2">Album:</Label>
-        <ComboBox Grid.Column="1" Grid.Row="2"  Name="AlbumyLista" IsEditable="True"></ComboBox>
+        <ComboBox Grid.Column="1" Grid.Row="2"  Name="AlbumyLista" IsEditable="True" TextBoxBase.TextChanged="RokAlbumu">
+            
+        </ComboBox>
+        
 
         <!-- Bottom Margin -->
         <Label Grid.Column="0" Grid.Row="3">Rok:</Label>
         <ComboBox Grid.Column="1" Grid.Row="3"  Name="RocznikiLista" IsEditable="False"></ComboBox>
 
+        <Label Grid.Column="0" Grid.Row="4">Ocena:</Label>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" >
+            <Grid  Width="200">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="1" Grid.Column="0" HorizontalAlignment="Stretch" />
+                <Button Content="2" Grid.Column="1" HorizontalAlignment="Stretch"/>
+                <Button Content="3" Grid.Column="2" HorizontalAlignment="Stretch" />
+                <Button Content="4" Grid.Column="3" HorizontalAlignment="Stretch"/>
+                <Button Content="5" Grid.Column="4" HorizontalAlignment="Stretch"/>
+            </Grid>
+            
+        </StackPanel>
+
+        <Label Grid.Column="0" Grid.Row="5">Ulubione:</Label>
+        <CheckBox Grid.Column="1" Grid.Row="5" Name ="UlubioneCheck" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5,0,5"></CheckBox>
+
         <!-- Accept or Cancel -->
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5">
-            <Button Name="okButton" Click="okButton_Click" IsDefault="True">OK</Button>
-            <Button Name="cancelButton" IsCancel="True">Cancel</Button>
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Name="okButton" Click="okButton_Click" IsDefault="True" Width="70">OK</Button>
+            <Button Name="cancelButton" IsCancel="True"  Width="70">Cancel</Button>
         </StackPanel>
 
     </Grid >

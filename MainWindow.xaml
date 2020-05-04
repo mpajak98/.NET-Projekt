@@ -22,10 +22,13 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"  Content="Utwory" Click="Button_Click_Utwory"></Button>
             <Button Grid.Column="1" Content="Albumy" Click="Button_Click_Album" ></Button>
             <Button Grid.Column="2" Content="Wykonawcy" Click="Button_Click_Wykonawca"></Button>
+            <Button Grid.Column="3" Content="Ulubione" Click="Button_Click_Ulubione"></Button>
+            
         </Grid>
 
         <DataGrid  Grid.Row="1" Grid.Column="0" Name="dataGrid1" Background ="WhiteSmoke" CanUserDeleteRows="False" AutoGenerateColumns="False" MinColumnWidth="50" MaxWidth="800">

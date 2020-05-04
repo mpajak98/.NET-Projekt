@@ -19,6 +19,69 @@ namespace BibliotekaMultimediow
         public DbSet<Album> Albumy { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=bazadanych.db");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Utwor>()
+                .Property(b => b.WykonawcaId)
+                .HasDefaultValue(1);
+            modelBuilder.Entity<Utwor>()
+                .Property(b => b.AlbumId)
+                .HasDefaultValue(1);
+            modelBuilder.Entity<Utwor>()
+                .Property(b => b.Rok)
+                .HasDefaultValue("nieznany");
+            modelBuilder.Entity<Utwor>()
+                .Property(b => b.Ocena)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Utwor>()
+                .Property(b => b.CzyUlubione)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Album>().HasData(
+                new Album
+                {
+                    AlbumId = 1,
+                    Nazwa = "nieznany",
+                    Rok = "nieznany",
+                    WykonawcaId = 1,
+                    CzyUlubione = false,
+                    Ocena = 0
+                }
+            ) ;
+
+            modelBuilder.Entity<Album>()
+                .Property(b => b.WykonawcaId)
+                .HasDefaultValue(1);
+            modelBuilder.Entity<Album>()
+                .Property(b => b.Ocena)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Album>()
+                .Property(b => b.CzyUlubione)
+                .HasDefaultValue(false);
+            modelBuilder.Entity<Album>()
+                .Property(b => b.Rok)
+                .HasDefaultValue("nieznany");
+
+            modelBuilder.Entity<Wykonawca>().HasData(
+                new Wykonawca
+                {
+                    WykonawcaId = 1,
+                    Nazwa = "nieznany",
+                    CzyUlubione = false,
+                    Ocena = 0
+                }
+            );
+
+            modelBuilder.Entity<Wykonawca>()
+                .Property(b => b.Ocena)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Wykonawca>()
+                .Property(b => b.CzyUlubione)
+                .HasDefaultValue(false);
+
+
+        }
     }
 
     public class Utwor
@@ -31,6 +94,7 @@ namespace BibliotekaMultimediow
 
         //[Range(0, 5)]
         public int Ocena { get; set; }
+
         public bool CzyUlubione { get; set; }
         public DateTime DataDodania { get; set; }
 

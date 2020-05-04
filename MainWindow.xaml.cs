@@ -33,12 +33,12 @@ namespace BibliotekaMultimediow
     /// <summary>
     /// Logika interakcji dla klasy MainWindow.xaml
     /// </summary>
-    public enum CurrentView { utwory, albumy, wykonawcy}
+    //public enum CurrentView { utwory, albumy, wykonawcy}
 
     public partial class MainWindow : Window
     {
         private BazaDanych db = new BazaDanych();
-        private CurrentView cv;
+        //private CurrentView cv;
         public MainWindow()
         {
             InitializeComponent(); // Inicjalizacja komponentu
@@ -48,7 +48,7 @@ namespace BibliotekaMultimediow
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            cv = CurrentView.utwory;
+            //cv = CurrentView.utwory;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -63,38 +63,52 @@ namespace BibliotekaMultimediow
         {
             Create_Columns_Utwory(); // Stworzenie kolumn siatki dla utworów 
             Refresh_Utwory(); // Wyswietlenie utworów z bazy danych
-            cv = CurrentView.utwory;
+            //cv = CurrentView.utwory;
         }
 
         private void Button_Click_Album(object sender, RoutedEventArgs e)
         {
             Create_Columns_Albumy(); // Stworzenie kolumn siatki dla albumów
             Refresh_Albumy(); // Wyswietlenie albumów z bazy danych
-            cv = CurrentView.albumy;
+            //cv = CurrentView.albumy;
         }
 
         private void Button_Click_Wykonawca(object sender, RoutedEventArgs e)
         {
             Create_Columns_Wykonawcy(); // Stworzenie kolumn siatki dla wykonawców
             Refresh_Wykonawcy(); // Wyswietlenie wykonawców z bazy danych
-            cv = CurrentView.wykonawcy;
+            //cv = CurrentView.wykonawcy;
+        }
+
+        private void Button_Click_Ulubione(object sender, RoutedEventArgs e)
+        {
+            Create_Columns_Wykonawcy(); // Stworzenie kolumn siatki dla wykonawców
+            var query =
+            from plik in db.Utwory
+            join wyk in db.Wykonawcy on plik.WykonawcaId equals wyk.WykonawcaId
+            join alb in db.Albumy on plik.AlbumId equals alb.AlbumId
+            where plik.CzyUlubione == true
+            orderby plik.Nazwa
+            select new { UtworId = plik.UtworId, Tytul = plik.Nazwa, Wykonawca = wyk.Nazwa, Album = alb.Nazwa, Rok = plik.Rok, Data = plik.DataDodania, Ocena = plik.Ocena, Ulubione = plik.CzyUlubione, URL = plik.UrlPath };
+
+            dataGrid1.ItemsSource = query.ToList();
         }
 
         //******************************************************************************************
 
 
-        
+
         // Funkcja dodająca jedną z instancji w zależności w jakim widoku się znajdujemy
         private void Button_Click_Dodaj(object sender, RoutedEventArgs e)
         {
-            switch (cv)
+            /*switch (cv)
             {
                 case CurrentView.utwory:
-                    {
+                    {*/
                         DodajUtworWindow win = new DodajUtworWindow();
                         win.ShowDialog();
                         Refresh_Utwory();
-                        break;
+         /*               break;
                     }
                 case CurrentView.albumy:
                     {
@@ -112,13 +126,13 @@ namespace BibliotekaMultimediow
                     }
 
             }
-
+        */
         }
 
         // Funkcja dodająca jedną z utwór po połączeniu z YT
         private void Button_Click_DodajYT(object sender, RoutedEventArgs e)
         {
-            DodajUtworYTWindow win = new DodajUtworYTWindow();
+            SzukajYT win = new SzukajYT();
             win.ShowDialog();
             Refresh_Utwory();
 
@@ -133,6 +147,39 @@ namespace BibliotekaMultimediow
             win.ShowDialog();
             Refresh_Utwory();
         }
+
+        private void Button_Click_Pokaz_Utwory_Wykonawcy(object sender, RoutedEventArgs e)
+        {
+            dynamic row = dataGrid1.SelectedItem;
+            string nazwa = row.WykonawcaNazwa;
+            Create_Columns_Utwory(); // Stworzenie kolumn siatki dla utworów 
+            var query =
+            from plik in db.Utwory
+            join wyk in db.Wykonawcy on plik.WykonawcaId equals wyk.WykonawcaId
+            join alb in db.Albumy on plik.AlbumId equals alb.AlbumId
+            where wyk.Nazwa == nazwa
+            orderby plik.Nazwa
+            select new { UtworId = plik.UtworId, Tytul = plik.Nazwa, Wykonawca = wyk.Nazwa, Album = alb.Nazwa, Rok = plik.Rok, Data = plik.DataDodania, Ocena = plik.Ocena, Ulubione = plik.CzyUlubione, URL = plik.UrlPath };
+
+            dataGrid1.ItemsSource = query.ToList();
+        }
+
+        private void Button_Click_Pokaz_Utwory_Albumu(object sender, RoutedEventArgs e)
+        {
+            dynamic row = dataGrid1.SelectedItem;
+            string nazwa = row.AlbumNazwa;
+            Create_Columns_Utwory(); // Stworzenie kolumn siatki dla utworów 
+            var query =
+            from plik in db.Utwory
+            join wyk in db.Wykonawcy on plik.WykonawcaId equals wyk.WykonawcaId
+            join alb in db.Albumy on plik.AlbumId equals alb.AlbumId
+            where alb.Nazwa == nazwa
+            orderby plik.Nazwa
+            select new { UtworId = plik.UtworId, Tytul = plik.Nazwa, Wykonawca = wyk.Nazwa, Album = alb.Nazwa, Rok = plik.Rok, Data = plik.DataDodania, Ocena = plik.Ocena, Ulubione = plik.CzyUlubione, URL = plik.UrlPath };
+
+            dataGrid1.ItemsSource = query.ToList();
+        }
+
 
         // Funkcja usuwająca jedną z instancji w zależności w jakim widoku się znajdujemy
         private void Button_Click_Usun(object sender, RoutedEventArgs e)
@@ -254,31 +301,37 @@ namespace BibliotekaMultimediow
             };
             dataGrid1.Columns.Add(c5);
 
-            Create_Column_Edytuj();
-            Create_Column_Usun();
+            Create_Column_Pokaz_Utwory_Albumu();
+            //Create_Column_Usun();
         }
 
         private void Create_Columns_Wykonawcy()
         {
             dataGrid1.Columns.Clear();
-            DataGridTextColumn c1 = new DataGridTextColumn();
-            c1.Header = "Wykonawca";
-            c1.Binding = new Binding("WykonawcaNazwa");
+            DataGridTextColumn c1 = new DataGridTextColumn
+            {
+                Header = "Wykonawca",
+                Binding = new Binding("WykonawcaNazwa")
+            };
             //c1.Width = 110;
             dataGrid1.Columns.Add(c1);
-            DataGridTextColumn c2 = new DataGridTextColumn();
-            c2.Header = "Ocena";
-            //c2.Width = 110;
-            c2.Binding = new Binding("WykonawcaOcena");
+            DataGridTextColumn c2 = new DataGridTextColumn
+            {
+                Header = "Ocena",
+                //c2.Width = 110;
+                Binding = new Binding("WykonawcaOcena")
+            };
             dataGrid1.Columns.Add(c2);
-            DataGridTextColumn c3 = new DataGridTextColumn();
-            c3.Header = "Ulubione";
-            //c3.Width = 110;
-            c3.Binding = new Binding("WykonawcaUlubione");
+            DataGridTextColumn c3 = new DataGridTextColumn
+            {
+                Header = "Ulubione",
+                //c3.Width = 110;
+                Binding = new Binding("WykonawcaUlubione")
+            };
             dataGrid1.Columns.Add(c3);
 
-            Create_Column_Edytuj();
-            Create_Column_Usun();
+            Create_Column_Pokaz_Utwory_Wykonawcy();
+            //Create_Column_Usun();
         }
 
         // Funkcja tworząca kolumnę przycisków do edycji
@@ -308,6 +361,31 @@ namespace BibliotekaMultimediow
             buttonUsunColumn.CellTemplate = buttonTemplate;
             dataGrid1.Columns.Add(buttonUsunColumn);
         }
+        private void Create_Column_Pokaz_Utwory_Albumu()
+        {
+            DataGridTemplateColumn buttonPokazColumn = new DataGridTemplateColumn();
+            DataTemplate buttonTemplate = new DataTemplate();
+            FrameworkElementFactory buttonFactory = new FrameworkElementFactory(typeof(Button));
+            buttonFactory.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(Button_Click_Pokaz_Utwory_Albumu));
+            buttonFactory.SetValue(ContentProperty, "Pokaż");
+            buttonTemplate.VisualTree = buttonFactory;
+            buttonPokazColumn.CellTemplate = buttonTemplate;
+            dataGrid1.Columns.Add(buttonPokazColumn);
+        }
+
+        private void Create_Column_Pokaz_Utwory_Wykonawcy()
+        {
+            DataGridTemplateColumn buttonPokazColumn = new DataGridTemplateColumn();
+            DataTemplate buttonTemplate = new DataTemplate();
+            FrameworkElementFactory buttonFactory = new FrameworkElementFactory(typeof(Button));
+            buttonFactory.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(Button_Click_Pokaz_Utwory_Wykonawcy));
+            buttonFactory.SetValue(ContentProperty, "Pokaż");
+            buttonTemplate.VisualTree = buttonFactory;
+            buttonPokazColumn.CellTemplate = buttonTemplate;
+            dataGrid1.Columns.Add(buttonPokazColumn);
+        }
+
+
         //******************************************************************************************
 
         //******************************************************************************************
@@ -331,9 +409,9 @@ namespace BibliotekaMultimediow
             {
                 var query =
                 from plik in db.Albumy
-                //join wyk in db.Wykonawcy on plik.WykonawcaId equals wyk.WykonawcaId
+                join wyk in db.Wykonawcy on plik.WykonawcaId equals wyk.WykonawcaId
                 orderby plik.Nazwa
-                select new { AlbumNazwa = plik.Nazwa,/* AlbumWykonawca = wyk.Nazwa, */AlbumRok = plik.Rok , AlbumUlubione = plik.CzyUlubione, AlbumOcena = plik.Ocena };
+                select new { AlbumNazwa = plik.Nazwa, AlbumWykonawca = wyk.Nazwa, AlbumRok = plik.Rok , AlbumUlubione = plik.CzyUlubione, AlbumOcena = plik.Ocena };
 
                 dataGrid1.ItemsSource = query.ToList();
             }
