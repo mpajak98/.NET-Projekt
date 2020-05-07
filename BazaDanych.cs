@@ -32,9 +32,6 @@ namespace BibliotekaMultimediow
                 .Property(b => b.Rok)
                 .HasDefaultValue("nieznany");
             modelBuilder.Entity<Utwor>()
-                .Property(b => b.Ocena)
-                .HasDefaultValue(0);
-            modelBuilder.Entity<Utwor>()
                 .Property(b => b.CzyUlubione)
                 .HasDefaultValue(false);
 
@@ -45,17 +42,13 @@ namespace BibliotekaMultimediow
                     Nazwa = "nieznany",
                     Rok = "nieznany",
                     WykonawcaId = 1,
-                    CzyUlubione = false,
-                    Ocena = 0
+                    CzyUlubione = false
                 }
             ) ;
 
             modelBuilder.Entity<Album>()
                 .Property(b => b.WykonawcaId)
                 .HasDefaultValue(1);
-            modelBuilder.Entity<Album>()
-                .Property(b => b.Ocena)
-                .HasDefaultValue(0);
             modelBuilder.Entity<Album>()
                 .Property(b => b.CzyUlubione)
                 .HasDefaultValue(false);
@@ -68,14 +61,10 @@ namespace BibliotekaMultimediow
                 {
                     WykonawcaId = 1,
                     Nazwa = "nieznany",
-                    CzyUlubione = false,
-                    Ocena = 0
+                    CzyUlubione = false
                 }
             );
 
-            modelBuilder.Entity<Wykonawca>()
-                .Property(b => b.Ocena)
-                .HasDefaultValue(0);
             modelBuilder.Entity<Wykonawca>()
                 .Property(b => b.CzyUlubione)
                 .HasDefaultValue(false);
@@ -88,12 +77,8 @@ namespace BibliotekaMultimediow
     {
         public int UtworId { get; set; }
         public string Nazwa { get; set; }
-        //public int CzasTrwania { get; set; }
         public int WykonawcaId { get; set; }
         public int AlbumId { get; set; }
-
-        //[Range(0, 5)]
-        public int Ocena { get; set; }
 
         public bool CzyUlubione { get; set; }
         public DateTime DataDodania { get; set; }
@@ -107,7 +92,6 @@ namespace BibliotekaMultimediow
         public int WykonawcaId { get; set; }
         public string Nazwa { get; set; }
         public bool CzyUlubione { get; set; }
-        public int Ocena { get; set; }
 
     }
 
@@ -118,7 +102,6 @@ namespace BibliotekaMultimediow
         public string Rok { get; set; }
         public int WykonawcaId { get; set; }
         public bool CzyUlubione { get; set; }
-        public int Ocena { get; set; }
 
     }
 

@@ -22,7 +22,6 @@ namespace BibliotekaMultimediow
         private BazaDanych db = new BazaDanych();
 
         private List<string> Roczniki  = new List<string> { "nieznany" };
-        private List<int> Ocena = new List<int> { 0, 1, 2, 3, 4, 5 };
         public DodajUtworWindow()
         {
             InitializeComponent();
@@ -30,37 +29,38 @@ namespace BibliotekaMultimediow
             for (int i = 2020; i > 1900; i--)
                 Roczniki.Add(i.ToString());
 
-            WykonawcyComboBox();
-            AlbumyComboBox();
-            RocznikiLista.ItemsSource = Roczniki;
-            RocznikiLista.Text = Roczniki.First();
+            WykonawcaComboBox_Create();
+            AlbumComboBox_Create();
+            RokComboBox.ItemsSource = Roczniki;
+            RokComboBox.Text = Roczniki.First();
         }
 
+
         // Utworzenie rozwijanej listy wykonawców
-        public void WykonawcyComboBox()
+        public void WykonawcaComboBox_Create()
         {
             var result = from w in db.Wykonawcy
                          orderby w.Nazwa
                          select w.Nazwa;
             
-            WykonawcyLista.ItemsSource = result.ToArray();
+            WykonawcaComboBox.ItemsSource = result.ToArray();
         }
         // Utworzenie rozwijanej listy albumów
-        public void AlbumyComboBox()
+        public void AlbumComboBox_Create()
         {
             var result = from a in db.Albumy
                          orderby a.Nazwa
                          select a.Nazwa;
-            AlbumyLista.ItemsSource = result.ToArray();
+            AlbumComboBox.ItemsSource = result.ToArray();
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Dialog box canceled
             DialogResult = false;
         }
 
-        private void okButton_Click(object sender, RoutedEventArgs e)
+        private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -84,10 +84,10 @@ namespace BibliotekaMultimediow
             if (NazwaTextBox.Text != "")
             {
 
-                WykonawcaId = IsWykonawcaValid();
-                AlbumId = IsAlbumValid();
+                WykonawcaId = IsWykonawcaValid(WykonawcaComboBox.Text);
+                AlbumId = IsAlbumValid(WykonawcaComboBox.Text, AlbumComboBox.Text);
                
-                Utwor u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = WykonawcaId, AlbumId = AlbumId, Rok = RocznikiLista.Text, CzyUlubione = false, DataDodania = DateTime.Now };
+                Utwor u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = WykonawcaId, AlbumId = AlbumId, Rok = RokComboBox.Text, CzyUlubione = false, DataDodania = DateTime.Now };
 
                 db.Add(u);
                 db.SaveChanges();
@@ -95,19 +95,19 @@ namespace BibliotekaMultimediow
 
         }
 
-        private int IsAlbumValid()
+        public int IsAlbumValid(string NazwaWykonawcy, string NazwaAlbumu)
         {
             string pusto = "";
-            if (AlbumyLista.Text != pusto)
+            if (NazwaAlbumu != pusto)
             {
                 Album album = (from a in db.Albumy
-                               where a.Nazwa == AlbumyLista.Text
+                               where a.Nazwa == NazwaAlbumu
                                select a).FirstOrDefault();
                 if (album == null) // albumu nie ma w bazie
                 {
-                    if (WykonawcyLista.Text == pusto) // nie podano wykonawcy
+                    if (NazwaWykonawcy == pusto) // nie podano wykonawcy
                     {
-                        Album newAlbum = new Album { Nazwa = AlbumyLista.Text, Rok = RocznikiLista.Text, WykonawcaId = 1 };
+                        Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = 1 };
                         db.Add(newAlbum);
                         db.SaveChanges();
                         return newAlbum.AlbumId;
@@ -116,10 +116,10 @@ namespace BibliotekaMultimediow
                     {
                         Wykonawca wykonawca =
                         (from wyk in db.Wykonawcy
-                         where wyk.Nazwa == WykonawcyLista.Text
+                         where wyk.Nazwa == NazwaWykonawcy
                          select wyk).FirstOrDefault();
 
-                        Album newAlbum = new Album { Nazwa = AlbumyLista.Text, Rok = RocznikiLista.Text, WykonawcaId = wykonawca.WykonawcaId };
+                        Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = wykonawca.WykonawcaId };
                         db.Add(newAlbum);
                         db.SaveChanges();
                         return newAlbum.AlbumId;
@@ -127,7 +127,7 @@ namespace BibliotekaMultimediow
                 }
                 else // album jest w bazie
                 {
-                    if (WykonawcyLista.Text == pusto) // nie podano wykonawcy
+                    if (NazwaWykonawcy == pusto) // nie podano wykonawcy
                     {
                         return album.AlbumId;
                     }
@@ -135,7 +135,7 @@ namespace BibliotekaMultimediow
                     {
                         Wykonawca wykonawca =
                         (from wyk in db.Wykonawcy
-                         where wyk.Nazwa == WykonawcyLista.Text
+                         where wyk.Nazwa == NazwaWykonawcy
                          select wyk).FirstOrDefault();
 
                         if (wykonawca.WykonawcaId == 1)
@@ -147,17 +147,17 @@ namespace BibliotekaMultimediow
             return 1;
         }
 
-        private int IsWykonawcaValid()
+        public int IsWykonawcaValid(string NazwaWykonawcy)
         {
             string pusto = "";
-            if (WykonawcyLista.Text != pusto)
+            if (NazwaWykonawcy != pusto)
             {
                 Wykonawca wykonawca = (from w in db.Wykonawcy
-                                       where w.Nazwa == WykonawcyLista.Text
+                                       where w.Nazwa == NazwaWykonawcy
                                        select w).FirstOrDefault();
                 if (wykonawca == null) //Wykonawcy nie ma w bazie
                 {
-                    Wykonawca newWykonawca = new Wykonawca { Nazwa = WykonawcyLista.Text };
+                    Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
                     db.Add(newWykonawca);
                     db.SaveChanges();
                     return newWykonawca.WykonawcaId;
@@ -171,17 +171,17 @@ namespace BibliotekaMultimediow
         private void SprawdzeniePoprawnosci()
         {
             Wykonawca w = (from wyk in db.Wykonawcy
-                           where wyk.Nazwa == WykonawcyLista.Text
+                           where wyk.Nazwa == WykonawcaComboBox.Text
                            select wyk).FirstOrDefault();
             Album a = (from alb in db.Albumy
-                           where alb.Nazwa == AlbumyLista.Text
+                           where alb.Nazwa == AlbumComboBox.Text
                            select alb).FirstOrDefault();
             Utwor u = (from utw in db.Utwory
                        where utw.Nazwa == NazwaTextBox.Text
                        select utw).FirstOrDefault();
-            string rok = RocznikiLista.Text;
-            string wykonawca = WykonawcyLista.Text;
-            string album = AlbumyLista.Text;
+            string rok = RokComboBox.Text;
+            string wykonawca = WykonawcaComboBox.Text;
+            string album = AlbumComboBox.Text;
             string nazwa = NazwaTextBox.Text;
 
             if (nazwa == "") 
@@ -207,7 +207,7 @@ namespace BibliotekaMultimediow
         public void AlbumyCheck()
         {
             Wykonawca w = (from wyk in db.Wykonawcy
-                           where wyk.Nazwa == WykonawcyLista.Text
+                           where wyk.Nazwa == WykonawcaComboBox.Text
                            select wyk).FirstOrDefault();
             if(w != null)
             {
@@ -215,52 +215,8 @@ namespace BibliotekaMultimediow
                              where a.WykonawcaId == w.WykonawcaId
                              orderby a.Nazwa
                              select a.Nazwa;
-                AlbumyLista.ItemsSource = result.ToArray();
+                AlbumComboBox.ItemsSource = result.ToArray();
             }
-        }
-
-        public void AlbumyWykonawcy(object sender, EventArgs e)
-        {
-            Wykonawca w = (from wyk in db.Wykonawcy
-                           where wyk.Nazwa == WykonawcyLista.Text
-                           select wyk).FirstOrDefault();
-            if (w != null)
-            {
-                var result = from a in db.Albumy
-                             where a.WykonawcaId == w.WykonawcaId
-                             orderby a.Nazwa
-                             select a.Nazwa;
-                AlbumyLista.ItemsSource = result.ToArray();
-                AlbumyLista.Text = result.FirstOrDefault();
-
-            }
-            else
-            {
-                var result = from a in db.Albumy
-                             orderby a.Nazwa
-                             select a.Nazwa;
-                AlbumyLista.ItemsSource = result.ToArray();
-                AlbumyLista.Text = result.FirstOrDefault();
-            }
-           
-        }
-
-        public void RokAlbumu(object sender, EventArgs e)
-        {
-            Album a = (from alb in db.Albumy
-                           where alb.Nazwa == AlbumyLista.Text
-                           select alb).FirstOrDefault();
-            if (a != null)
-            {
-                RocznikiLista.ItemsSource = new List<string>{a.Rok};
-                RocznikiLista.Text = a.Rok;
-            }
-            else
-            {
-                RocznikiLista.ItemsSource = Roczniki.ToList();
-                RocznikiLista.Text = Roczniki.First();
-            }
-                
         }
 
         // Validate all dependency objects in a window
@@ -286,7 +242,47 @@ namespace BibliotekaMultimediow
 
             // All dependency objects are valid
         }
-    
 
+        private void WykonawcaComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Wykonawca w = (from wyk in db.Wykonawcy
+                           where wyk.Nazwa == WykonawcaComboBox.Text
+                           select wyk).FirstOrDefault();
+            if (w != null)
+            {
+                var result = from a in db.Albumy
+                             where a.WykonawcaId == w.WykonawcaId
+                             orderby a.Nazwa
+                             select a.Nazwa;
+                AlbumComboBox.ItemsSource = result.ToArray();
+                AlbumComboBox.Text = result.FirstOrDefault();
+
+            }
+            else
+            {
+                var result = from a in db.Albumy
+                             orderby a.Nazwa
+                             select a.Nazwa;
+                AlbumComboBox.ItemsSource = result.ToArray();
+                AlbumComboBox.Text = result.FirstOrDefault();
+            }
+        }
+
+        private void AlbumComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Album a = (from alb in db.Albumy
+                       where alb.Nazwa == AlbumComboBox.Text
+                       select alb).FirstOrDefault();
+            if (a != null)
+            {
+                RokComboBox.ItemsSource = new List<string> { a.Rok };
+                RokComboBox.Text = a.Rok;
+            }
+            else
+            {
+                RokComboBox.ItemsSource = Roczniki.ToList();
+                RokComboBox.Text = Roczniki.First();
+            }
+        }
     }
 }

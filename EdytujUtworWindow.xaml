@@ -11,38 +11,12 @@
     ResizeMode="CanResizeWithGrip"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterOwner" >
+
     <Grid>
 
-        <Grid.Resources>
-            <Style TargetType="{x:Type Grid}">
-                <Setter Property="Margin" Value="10" />
-            </Style>
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="Margin" Value="0,3,5,5" />
-                <Setter Property="Padding" Value="0,0,0,5" />
-            </Style>
-            <Style TargetType="{x:Type TextBox}">
-                <Setter Property="Margin" Value="0,0,0,5" />
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="{x:Type StackPanel}">
-                <Setter Property="Orientation" Value="Horizontal" />
-                <Setter Property="HorizontalAlignment" Value="Right" />
-            </Style>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Width" Value="70" />
-                <Setter Property="Height" Value="25" />
-                <Setter Property="Margin" Value="5,0,0,0" />
-            </Style>
-        </Grid.Resources>
-
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -52,34 +26,41 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Left Margin -->
-        <Label Grid.Column="0" Grid.Row="0">Nazwa:</Label>
+        <!-- Nazwa  -->
+        <Label Name="NazwaLabel" Grid.Column="0" Grid.Row="0">Nazwa:</Label>
         <TextBox Name="NazwaTextBox" Grid.Column="1" Grid.Row="0"></TextBox>
 
-        <!-- Top Margin -->
-        <Label Grid.Column="0" Grid.Row="1">Wykonawca:</Label>
+        <!-- Wykonawca -->
+        <Label Name="WykonawcaLabel" Grid.Column="0" Grid.Row="1">Wykonawca:</Label>
+        <ComboBox  Name="WykonawcaComboBox"  Grid.Column="1" Grid.Row="1" IsEditable="True" ></ComboBox>
 
+        <!-- Album -->
+        <Label Name="AlbumLabel" Grid.Column="0" Grid.Row="2">Album:</Label>
+        <ComboBox Name="AlbumComboBox" Grid.Column="1" Grid.Row="2"   IsEditable="True"></ComboBox>
 
+        <!-- Rok -->
+        <Label Name="RokLabel" Grid.Column="0" Grid.Row="3">Rok:</Label>
+        <ComboBox Name="RokComboBox" Grid.Column="1" Grid.Row="3"   IsEditable="False"></ComboBox>
 
-        <ComboBox Grid.Column="1" Grid.Row="1"  Name="WykonawcyLista" IsEditable="True"></ComboBox>
+        <Label Name="UrlLabel" Grid.Column="0" Grid.Row="4">Link:</Label>
+        <TextBox Name="UrlTextBox" Grid.Column="1" Grid.Row="4"></TextBox>
 
+        <!-- Ulubione -->
+        <Label Name="UlubioneLabel" Grid.Column="0" Grid.Row="5">Ulubione:</Label>
+        <CheckBox Name ="UlubioneCheckBox" Grid.Column="1" Grid.Row="5"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5,0,5"></CheckBox>
 
-        <!-- Right Margin -->
-        <Label Grid.Column="0" Grid.Row="2">Album:</Label>
-        <ComboBox Grid.Column="1" Grid.Row="2"  Name="AlbumyLista" IsEditable="True"></ComboBox>
-
-        <!-- Bottom Margin -->
-        <Label Grid.Column="0" Grid.Row="3">Rok:</Label>
-        <ComboBox Grid.Column="1" Grid.Row="3"  Name="RocznikiLista" IsEditable="False"></ComboBox>
-
-        <!-- Accept or Cancel -->
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5">
-            <Button Name="okButton" Click="okButton_Click" IsDefault="True">OK</Button>
-            <Button Name="cancelButton" IsCancel="True">Cancel</Button>
+        <!-- OK/Cancel -->
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Name="okButton" Click="okButton_Click" IsDefault="True" Width="70">OK</Button>
+            <Button Name="cancelButton" IsCancel="True"  Width="70">Cancel</Button>
         </StackPanel>
-
     </Grid >
+
+
+
+
 </Window>

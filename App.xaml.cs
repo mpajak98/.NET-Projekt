@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Bib
+namespace BibliotekMultimediow
 {
     /// <summary>
     /// Logika interakcji dla klasy App.xaml
