@@ -52,6 +52,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\BibliotekaMultimediow.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Google.Apis, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
@@ -206,29 +207,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BazaDanych.cs" />
-    <Compile Include="DodajAlbumWindow.xaml.cs">
-      <DependentUpon>DodajAlbumWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DodajUtworWindow.xaml.cs">
       <DependentUpon>DodajUtworWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoolToImageConverter.cs" />
+    <Compile Include="Migrations\20200508204251_MigrationV7.cs" />
+    <Compile Include="Migrations\20200508204251_MigrationV7.designer.cs">
+      <DependentUpon>20200508204251_MigrationV7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\BazaDanychModelSnapshot.cs" />
     <Compile Include="SzukajYT.xaml.cs">
       <DependentUpon>SzukajYT.xaml</DependentUpon>
     </Compile>
-    <Page Include="DodajAlbumWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="DodajUtworWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DodajUtworYTWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DodajWykonawceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -244,12 +234,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DodajUtworYTWindow.xaml.cs">
-      <DependentUpon>DodajUtworYTWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DodajWykonawceWindow.xaml.cs">
-      <DependentUpon>DodajWykonawceWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="EdytujUtworWindow.xaml.cs">
       <DependentUpon>EdytujUtworWindow.xaml</DependentUpon>
     </Compile>
@@ -263,12 +247,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarginValidationRule.cs" />
-    <Compile Include="Migrations\20200503131731_MigrationV5.cs" />
-    <Compile Include="Migrations\20200503131731_MigrationV5.designer.cs">
-      <DependentUpon>20200503131731_MigrationV5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\BazaDanychModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -320,6 +298,7 @@
     <Content Include=".gitignore" />
     <Content Include="api\.gitignore" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets" Condition="Exists('packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

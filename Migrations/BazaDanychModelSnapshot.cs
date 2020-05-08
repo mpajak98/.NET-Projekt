@@ -22,18 +22,11 @@ namespace BibliotekaMultimediow.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("CzyUlubione")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
+                    b.Property<int>("LiczbaUtworowWAlumie")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Ocena")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
 
                     b.Property<string>("Rok")
                         .ValueGeneratedOnAdd()
@@ -53,9 +46,8 @@ namespace BibliotekaMultimediow.Migrations
                         new
                         {
                             AlbumId = 1,
-                            CzyUlubione = false,
+                            LiczbaUtworowWAlumie = 0,
                             Nazwa = "nieznany",
-                            Ocena = 0,
                             Rok = "nieznany",
                             WykonawcaId = 1
                         });
@@ -83,11 +75,6 @@ namespace BibliotekaMultimediow.Migrations
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Ocena")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
-
                     b.Property<string>("Rok")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
@@ -112,18 +99,11 @@ namespace BibliotekaMultimediow.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("CzyUlubione")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
+                    b.Property<int>("LiczbaUtworowWykonawcy")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Ocena")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
 
                     b.HasKey("WykonawcaId");
 
@@ -133,9 +113,8 @@ namespace BibliotekaMultimediow.Migrations
                         new
                         {
                             WykonawcaId = 1,
-                            CzyUlubione = false,
-                            Nazwa = "nieznany",
-                            Ocena = 0
+                            LiczbaUtworowWykonawcy = 0,
+                            Nazwa = "nieznany"
                         });
                 });
 #pragma warning restore 612, 618

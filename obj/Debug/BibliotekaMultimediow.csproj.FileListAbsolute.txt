@@ -80,14 +80,8 @@ C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\B
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\BibliotekaMultimediow.Properties.Resources.resources
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\BibliotekaMultimediow.exe
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\BibliotekaMultimediow.pdb
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajAlbumWindow.g.cs
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajUtworWindow.g.cs
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajWykonawceWindow.g.cs
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajAlbumWindow.baml
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajUtworWindow.baml
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajWykonawceWindow.baml
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajUtworYTWindow.g.cs
-C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\DodajUtworYTWindow.baml
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\EdytujUtworWindow.g.cs
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\EdytujUtworWindow.baml
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\Google.Apis.Auth.dll
@@ -106,3 +100,4 @@ C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\B
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\Google.Apis.YouTube.v3.xml
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\SzukajYT.g.cs
 C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\obj\Debug\SzukajYT.baml
+C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\bin\Debug\BibliotekaMultimediow.xml

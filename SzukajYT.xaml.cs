@@ -35,24 +35,53 @@ namespace BibliotekaMultimediow
     public partial class SzukajYT : Window
     {
         private BazaDanych db = new BazaDanych();
-        private readonly string APIKEY = "AIzaSyCWlMH7Y1bGSh1efU2Pef8dhWo7_WjpZuY";
+        private readonly string APIKEY = "AIzaSyA0RPp6XRV_WcHJQn3gtUyZVdIJ7Qpk74A";
+
         public List<Wynik> Videos;
+
+        /// <summary>
+        /// Konstruktor okna SzukajYT
+        /// </summary>
         public SzukajYT()
         {
             InitializeComponent();
         }
 
-        public struct Wynik
+        /// <summary>
+        /// Klasa reprezentująca pojedynczy wynik wyszukiwania
+        /// </summary>
+        public class Wynik
         {
+            /// <summary>
+            /// Pełna data i godzina dodania video do serwisu YouTube
+            /// </summary>
             public DateTime publishedAt { get; set; }
+            /// <summary>
+            /// Sama data dodania video do serwisu YouTube
+            /// </summary>
             public string date { get; set; }
+            /// <summary>
+            /// Tytuł video
+            /// </summary>
             public string Title { get; set; }
+            /// <summary>
+            /// Nazwa kanału
+            /// </summary>
             public string ChannelTitle { get; set; }
+            /// <summary>
+            /// Opis video
+            /// </summary>
             public string Description { get; set; }
+            /// <summary>
+            /// Link do video
+            /// </summary>
             public string Url { get; set; }
              
-            public Image Thumbnail { get; set; }
-
+            /// <summary>
+            /// Konstruktor
+            /// </summary>
+            /// <param name="snip">Objekt przechowujący podstawowe dane o video</param>
+            /// <param name="id">ID video</param>
             public Wynik(SearchResultSnippet snip, ResourceId id)
             {
                 Title = snip.Title;
@@ -61,16 +90,16 @@ namespace BibliotekaMultimediow
                 ChannelTitle = snip.ChannelTitle;
                 Description = snip.Description;
                 Url = "https://www.youtube.com/watch?v=" + id.VideoId;
-                Thumbnail = GetImageFromUrl(snip.Thumbnails.Standard.Url);
             }
-
         }
+
         /// <summary>
-        /// Searching Api Class
+        /// Wyszukiwarka w serwisie YouTube
         /// </summary>
-
-
-
+        /// <remarks>Wyniki wyszukiwania są dodawane do listy Videos </remarks>
+        /// <param name="ObjectName">Nazwa do wyszukania</param>
+        /// <param name="MaxResults">Maksymalna liczba wyników wyszukiwania</param>
+        /// <returns></returns>
         private async Task Run(string ObjectName, int MaxResults)
         {
             
@@ -84,13 +113,13 @@ namespace BibliotekaMultimediow
 
                 var searchListRequest = youtubeService.Search.List("snippet");
                 searchListRequest.Type = "video";
-                searchListRequest.Q = ObjectName; /// Replace with your search term.
+                searchListRequest.Q = ObjectName; // Replace with your search term.
                 searchListRequest.MaxResults = MaxResults;
 
-                /// Call the search.list method to retrieve results matching the specified query term.
+                // Call the search.list method to retrieve results matching the specified query term.
                 var searchListResponse = await searchListRequest.ExecuteAsync();
 
-                /// Add each result to the appropriate list
+                // Add each result to the appropriate list
                 foreach (var searchResult in searchListResponse.Items)
                     this.Videos.Add(new Wynik(searchResult.Snippet, searchResult.Id));
 
@@ -100,10 +129,13 @@ namespace BibliotekaMultimediow
                 MessageBox.Show(ex.Message);
             }
 
-            
-
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static BitmapImage GetFileFromUrl(string url)
         {
             System.Net.WebRequest request =
@@ -122,47 +154,13 @@ namespace BibliotekaMultimediow
             return bitmapImage;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-
-        public async Task<bool> Funko()
-        {
-            try
-            {
-                string k = SzukajTextBox.Text;
-                return await Task.Run(() =>
-                {
-                    Run(k, 25).Wait();
-                    return true;
-                });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return true;
-        }
-
-        private void PokazOpis(object sender, RoutedEventArgs e)
-        {
-            int i = Wyniki.SelectedIndex;
-            MessageBox.Show(Videos[i].Description);
-        }
-
         /// <summary>
-        ///  Add to library button
+        /// Działanie przycisku Dodaj
         /// </summary>
+        /// <remarks>Dodaje wybrany utwór do bazy danych</remarks>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Dodaj(object sender, RoutedEventArgs e)
+        private void DodajButton_Click(object sender, RoutedEventArgs e)
         {
             int i = Wyniki.SelectedIndex;
             string NazwaWykonawcy = Videos[i].ChannelTitle;
@@ -201,6 +199,11 @@ namespace BibliotekaMultimediow
             }
         }
 
+        /// <summary>
+        /// Działanie przycisku Szukaj
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SzukajButton_Click(object sender, RoutedEventArgs e)
         {
             Videos = new List<Wynik>();

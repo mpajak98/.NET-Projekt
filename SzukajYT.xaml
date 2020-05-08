@@ -60,25 +60,16 @@
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Click="Dodaj">Dodaj</Button>
+                                <Button Name="DodajButton" Click="DodajButton_Click">Dodaj</Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Hanover_bars_with_PAL_delay.png/220px-Hanover_bars_with_PAL_delay.png" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
 
             
         </Grid>
-        <Image Grid.Row="3" Source="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Hanover_bars_with_PAL_delay.png/220px-Hanover_bars_with_PAL_delay.png" />
-
+        
     </Grid>
     
 </Window>

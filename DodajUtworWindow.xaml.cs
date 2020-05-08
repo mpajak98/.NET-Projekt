@@ -21,50 +21,84 @@ namespace BibliotekaMultimediow
     {
         private BazaDanych db = new BazaDanych();
 
-        private List<string> Roczniki  = new List<string> { "nieznany" };
+        private List<string> Roczniki  = new List<string> { "" };
+
+        /// <summary>
+        /// Konstruktor okna DodajUtworWindow
+        /// </summary>
+        /// <remarks>
+        /// Inicjalizuje okno oraz inicjalizuje pola z rozwijanymi listami do wpisania informacji o utworze
+        /// </remarks>
         public DodajUtworWindow()
         {
+
             InitializeComponent();
 
             for (int i = 2020; i > 1900; i--)
                 Roczniki.Add(i.ToString());
 
-            WykonawcaComboBox_Create();
-            AlbumComboBox_Create();
-            RokComboBox.ItemsSource = Roczniki;
-            RokComboBox.Text = Roczniki.First();
+            WykonawcaComboBox_Init();
+            AlbumComboBox_Init();
+            RokComboBox_Init();
         }
 
 
-        // Utworzenie rozwijanej listy wykonawców
-        public void WykonawcaComboBox_Create()
+        /// <summary>
+        /// Inicjalizuje listę rozwijaną do wyboru wykonawcy
+        /// </summary>
+        public void WykonawcaComboBox_Init()
         {
             var result = from w in db.Wykonawcy
+                         where w.WykonawcaId != 1
                          orderby w.Nazwa
                          select w.Nazwa;
             
             WykonawcaComboBox.ItemsSource = result.ToArray();
         }
-        // Utworzenie rozwijanej listy albumów
-        public void AlbumComboBox_Create()
+        /// <summary>
+        /// Inicjalizuje listę rozwijaną do wyboru albumu
+        /// </summary>
+        public void AlbumComboBox_Init()
         {
             var result = from a in db.Albumy
+                         where a.AlbumId != 1
                          orderby a.Nazwa
                          select a.Nazwa;
             AlbumComboBox.ItemsSource = result.ToArray();
         }
 
+        /// <summary>
+        /// Inicjalizuje listę rozwijaną do wyboru roku
+        /// </summary>
+        public void RokComboBox_Init()
+        {
+            RokComboBox.ItemsSource = Roczniki;
+            RokComboBox.Text = Roczniki.First();
+        }
+
+        /// <summary>
+        /// Działanie przycisku Cancel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Dialog box canceled
             DialogResult = false;
         }
 
+        /// <summary>
+        /// Działanie przeycisku OK
+        /// </summary>
+        /// <remarks>
+        /// Sprawdza poprawność danych i jeśli są poprawne to dodaje utwór do bazy danych
+        /// </remarks>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SprawdzeniePoprawnosci();
                 DodanieUtworu();
             }
             catch(Exception ex)
@@ -78,171 +112,391 @@ namespace BibliotekaMultimediow
             DialogResult = true;
         }
 
-        private void DodanieUtworu()
+        /// <summary>
+        /// Sprawdza poprawność danych oraz dodaje utwór do bazy danych, jeśli dane poprawne
+        /// </summary>
+         private void DodanieUtworu()
         {
-            int WykonawcaId = 1, AlbumId = 1;
-            if (NazwaTextBox.Text != "")
-            {
 
-                WykonawcaId = IsWykonawcaValid(WykonawcaComboBox.Text);
-                AlbumId = IsAlbumValid(WykonawcaComboBox.Text, AlbumComboBox.Text);
-               
-                Utwor u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = WykonawcaId, AlbumId = AlbumId, Rok = RokComboBox.Text, CzyUlubione = false, DataDodania = DateTime.Now };
-
-                db.Add(u);
-                db.SaveChanges();
-            }
-
-        }
-
-        public int IsAlbumValid(string NazwaWykonawcy, string NazwaAlbumu)
-        {
-            string pusto = "";
-            if (NazwaAlbumu != pusto)
-            {
-                Album album = (from a in db.Albumy
-                               where a.Nazwa == NazwaAlbumu
-                               select a).FirstOrDefault();
-                if (album == null) // albumu nie ma w bazie
-                {
-                    if (NazwaWykonawcy == pusto) // nie podano wykonawcy
-                    {
-                        Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = 1 };
-                        db.Add(newAlbum);
-                        db.SaveChanges();
-                        return newAlbum.AlbumId;
-                    }
-                    else // podano wykonawce
-                    {
-                        Wykonawca wykonawca =
-                        (from wyk in db.Wykonawcy
-                         where wyk.Nazwa == NazwaWykonawcy
-                         select wyk).FirstOrDefault();
-
-                        Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = wykonawca.WykonawcaId };
-                        db.Add(newAlbum);
-                        db.SaveChanges();
-                        return newAlbum.AlbumId;
-                    }
-                }
-                else // album jest w bazie
-                {
-                    if (NazwaWykonawcy == pusto) // nie podano wykonawcy
-                    {
-                        return album.AlbumId;
-                    }
-                    else // podano wykonawce
-                    {
-                        Wykonawca wykonawca =
-                        (from wyk in db.Wykonawcy
-                         where wyk.Nazwa == NazwaWykonawcy
-                         select wyk).FirstOrDefault();
-
-                        if (wykonawca.WykonawcaId == 1)
-                            album.WykonawcaId = wykonawca.WykonawcaId;
-                        return album.AlbumId;
-                    }
-                }
-            }
-            return 1;
-        }
-
-        public int IsWykonawcaValid(string NazwaWykonawcy)
-        {
-            string pusto = "";
-            if (NazwaWykonawcy != pusto)
-            {
-                Wykonawca wykonawca = (from w in db.Wykonawcy
-                                       where w.Nazwa == NazwaWykonawcy
-                                       select w).FirstOrDefault();
-                if (wykonawca == null) //Wykonawcy nie ma w bazie
-                {
-                    Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
-                    db.Add(newWykonawca);
-                    db.SaveChanges();
-                    return newWykonawca.WykonawcaId;
-                }
-                else // wykonawca jest w bazie
-                    return wykonawca.WykonawcaId;
-            }
-            return 1;
-        }
-
-        private void SprawdzeniePoprawnosci()
-        {
-            Wykonawca w = (from wyk in db.Wykonawcy
-                           where wyk.Nazwa == WykonawcaComboBox.Text
-                           select wyk).FirstOrDefault();
-            Album a = (from alb in db.Albumy
-                           where alb.Nazwa == AlbumComboBox.Text
-                           select alb).FirstOrDefault();
-            Utwor u = (from utw in db.Utwory
-                       where utw.Nazwa == NazwaTextBox.Text
-                       select utw).FirstOrDefault();
             string rok = RokComboBox.Text;
-            string wykonawca = WykonawcaComboBox.Text;
-            string album = AlbumComboBox.Text;
+            string NazwaWykonawcy = WykonawcaComboBox.Text;
+            string NazwaAlbumu = AlbumComboBox.Text;
             string nazwa = NazwaTextBox.Text;
-
-            if (nazwa == "") 
+            string pusto = "";
+            int wykonawcaID = 1, albumID = 1;
+            // nir podano nazwy utworu
+            if (nazwa == pusto)
                 throw new Exception("Nie podano nazwy");
-            if(u != null) 
-                throw new Exception("Podana nazwa już istnieje");
-            if(a != null && rok != "")
-                if(a.Rok != rok)
-                    throw new Exception("Album już istnieje i ma inny rok wydania");
-            if (a != null && w.Nazwa != "")
-                if (a.WykonawcaId != w.WykonawcaId)
-                    throw new Exception("Album nie zgadza się z wykonawcą");
-            if (a != null && rok != "" && w != null)
+            else //podano nazwe
             {
-                if (a.Rok != rok)
-                    throw new Exception("Album już istnieje i ma inny rok wydania");
-                if (a.WykonawcaId != w.WykonawcaId)
-                    throw new Exception("Album nie zgadza się z wykonawcą");
-            }
-
-        }
-
-        public void AlbumyCheck()
-        {
-            Wykonawca w = (from wyk in db.Wykonawcy
-                           where wyk.Nazwa == WykonawcaComboBox.Text
-                           select wyk).FirstOrDefault();
-            if(w != null)
-            {
-                var result = from a in db.Albumy
-                             where a.WykonawcaId == w.WykonawcaId
-                             orderby a.Nazwa
-                             select a.Nazwa;
-                AlbumComboBox.ItemsSource = result.ToArray();
-            }
-        }
-
-        // Validate all dependency objects in a window
-        private bool IsValid(DependencyObject node)
-        {
-            // Check if dependency object was passed
-            if (node != null)
-            {
-                // Check if dependency object is valid.
-                // NOTE: Validation.GetHasError works for controls that have validation rules attached 
-                var isValid = !Validation.GetHasError(node);
-                if (!isValid)
+                //nazwa jest zajęta
+                if (db.Utwory.Any(tmp => tmp.Nazwa == nazwa))
+                    throw new Exception("Podana nazwa już istnieje");
+                else //podana nazwa jest wolna
                 {
-                    // If the dependency object is invalid, and it can receive the focus,
-                    // set the focus
-                    if (node is IInputElement) Keyboard.Focus((IInputElement)node);
-                    return false;
+                    // podano wszystko
+                    if (NazwaWykonawcy != pusto && NazwaAlbumu != pusto && rok != pusto)
+                    {
+                        //istnieje wykonawca oraz istnieje album
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+
+                            if (w.WykonawcaId == 1 && a.AlbumId == 1)
+                            {
+                                albumID = a.AlbumId;
+                                wykonawcaID = w.WykonawcaId;
+                            }
+                            if (w.WykonawcaId != 1 && a.AlbumId == 1)
+                            {
+                                albumID = a.AlbumId;
+                                wykonawcaID = w.WykonawcaId;
+                            }
+                            if (w.WykonawcaId == 1 && a.AlbumId != 1)
+                            {
+                                foreach (Utwor ut in db.Utwory)
+                                {
+                                    if (ut.AlbumId == a.AlbumId)
+                                    {
+                                        ut.WykonawcaId = a.WykonawcaId;
+                                        db.Utwory.Update(ut);
+                                        db.SaveChanges();
+                                    }
+                                }
+
+                                albumID = a.AlbumId;
+                                wykonawcaID = a.WykonawcaId;
+                            }
+                            if (w.WykonawcaId != 1 && a.AlbumId != 1)
+                            {
+                                if (a.WykonawcaId != w.WykonawcaId)
+                                    throw new Exception("Album nie zgadza się z wykonawcą");
+                                else
+                                {
+                                    a.Rok = rok;
+                                    db.Albumy.Update(a);
+                                    db.SaveChanges();
+
+                                    foreach (Utwor ut in db.Utwory)
+                                    {
+                                        if(ut.AlbumId == a.AlbumId)
+                                        {
+                                            ut.Rok = rok;
+                                            db.Utwory.Update(ut);
+                                            db.SaveChanges();
+                                        }
+                                    }
+
+
+                                    albumID = a.AlbumId;
+                                    wykonawcaID = w.WykonawcaId;
+
+
+
+                                }
+                            }
+
+                        }
+                        // NIE istnieje wykonawca oraz istnieje album
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+                            a.WykonawcaId = newWykonawca.WykonawcaId;
+                            a.Rok = rok;
+                            db.Albumy.Update(a);
+                            db.SaveChanges();
+                            foreach (Utwor ut in db.Utwory)
+                            {
+                                if (ut.AlbumId == a.AlbumId)
+                                {
+                                    ut.WykonawcaId = newWykonawca.WykonawcaId;
+                                    ut.Rok = rok;
+                                    db.Utwory.Update(ut);
+                                    db.SaveChanges();
+                                }
+                            }
+
+                            albumID = a.AlbumId;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+
+                        }
+                        // istnieje wykonawca oraz NIE istnieje album
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && !db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            // utworz album o podanym tytule i przypisz do niego tego wykonawce
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = w.WykonawcaId };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = w.WykonawcaId;
+
+                        }
+                        // NIE istnieje wykonawca oraz NIE istnieje album
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && !db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = RokComboBox.Text, WykonawcaId = newWykonawca.WykonawcaId };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+                        }
+                    }
+                    // NIE podano wykonacy  - podano album  - podano rok
+                    if (NazwaWykonawcy == pusto && NazwaAlbumu != pusto && rok != pusto)
+                    {
+                        // album istnieje
+                        if (db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+                            a.Rok = rok;
+                            db.Albumy.Update(a);
+                            db.SaveChanges();
+                            foreach (Utwor ut in db.Utwory)
+                            {
+                                if (ut.AlbumId == a.AlbumId)
+                                {
+                                    ut.Rok = rok;
+                                    db.Utwory.Update(ut);
+                                    db.SaveChanges();
+                                }
+                            }
+
+
+                            albumID = a.AlbumId;
+                            wykonawcaID = a.WykonawcaId;
+                        }
+                        //album NIE istnieje
+                        if (!db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = rok, WykonawcaId = 1 };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = 1;
+                        }
+
+                    }
+                    // podano wykonawce - NIE podano albumu - podano rok
+                    if (NazwaWykonawcy != pusto && NazwaAlbumu == pusto && rok != pusto)
+                    {
+                        // wykonawca istnieje
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy))
+                        {
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+
+                            albumID = 1;
+                            wykonawcaID = w.WykonawcaId;
+                        }
+                        //wykonawca NIE istnieje
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy))
+                        {
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            albumID = 1;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+                        }
+                    }
+                    // podano wykonawce - podano album - NIE podano roku
+                    if (NazwaWykonawcy != pusto && NazwaAlbumu != pusto && rok == pusto)
+                    {
+                        //istnieje wykonawca oraz istnieje album
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+                            if (w.WykonawcaId == 1 && a.AlbumId == 1)
+                            {
+                                albumID = a.AlbumId;
+                                wykonawcaID = w.WykonawcaId;
+                            }
+                            if (w.WykonawcaId != 1 && a.AlbumId == 1)
+                            {
+                                albumID = a.AlbumId;
+                                wykonawcaID = w.WykonawcaId;
+                            }
+                            if (w.WykonawcaId == 1 && a.AlbumId != 1)
+                            {
+                                albumID = a.AlbumId;
+                                wykonawcaID = a.WykonawcaId;
+                            }
+                            if (w.WykonawcaId != 1 && a.AlbumId != 1)
+                            {
+                                if (a.WykonawcaId != w.WykonawcaId)
+                                    throw new Exception("Album nie zgadza się z wykonawcą");
+                                else
+                                {
+                                    albumID = a.AlbumId;
+                                    wykonawcaID = w.WykonawcaId;
+                                }
+                            }
+                        }
+                        // NIE istnieje wykonawca oraz istnieje album
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+                            a.WykonawcaId = newWykonawca.WykonawcaId;
+                            db.Albumy.Update(a);
+                            db.SaveChanges();
+                            foreach (Utwor ut in db.Utwory)
+                            {
+                                if (ut.AlbumId == a.AlbumId)
+                                {
+                                    ut.WykonawcaId = newWykonawca.WykonawcaId;
+                                    db.Utwory.Update(ut);
+                                    db.SaveChanges();
+                                }
+                            }
+
+                            albumID = a.AlbumId;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+
+                        }
+                        // istnieje wykonawca oraz NIE istnieje album
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && !db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            // utworz album o podanym tytule i przypisz do niego tego wykonawce
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = "nieznany", WykonawcaId = w.WykonawcaId };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = w.WykonawcaId;
+
+                        }
+                        // NIE istnieje wykonawca oraz NIE istnieje album
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy) && !db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = "nieznany", WykonawcaId = newWykonawca.WykonawcaId };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+                        }
+                    }
+                    // NIE podano wykonawcy - NIE podano albumu - podano rok
+                    if (NazwaWykonawcy == pusto && NazwaAlbumu == pusto && rok != pusto)
+                    {
+                        albumID = 1;
+                        wykonawcaID = 1;
+                    }
+                    // podano wykonawce - NIE podano albumu - NIE podano roku
+                    if (NazwaWykonawcy != pusto && NazwaAlbumu == pusto && rok == pusto)
+                    {
+                        if (db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy))
+                        {
+                            Wykonawca w = (from wyk in db.Wykonawcy
+                                           where wyk.Nazwa == WykonawcaComboBox.Text
+                                           select wyk).FirstOrDefault();
+                            albumID = 1;
+                            wykonawcaID = w.WykonawcaId;
+                        }
+                        if (!db.Wykonawcy.Any(tmp => tmp.Nazwa == NazwaWykonawcy))
+                        {
+                            Wykonawca newWykonawca = new Wykonawca { Nazwa = NazwaWykonawcy };
+                            db.Add(newWykonawca);
+                            db.SaveChanges();
+
+                            albumID = 1;
+                            wykonawcaID = newWykonawca.WykonawcaId;
+                        }
+                    }
+                    if (NazwaWykonawcy == pusto && NazwaAlbumu != pusto && rok == pusto)
+                    {
+                        if (db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Album a = (from alb in db.Albumy
+                                       where alb.Nazwa == AlbumComboBox.Text
+                                       select alb).FirstOrDefault();
+                            albumID = a.AlbumId;
+                            wykonawcaID = a.WykonawcaId;
+                        }
+                        if (!db.Albumy.Any(tmp => tmp.Nazwa == NazwaAlbumu))
+                        {
+                            Album newAlbum = new Album { Nazwa = NazwaAlbumu, Rok = "nieznany", WykonawcaId = 1 };
+                            db.Add(newAlbum);
+                            db.SaveChanges();
+
+                            albumID = newAlbum.AlbumId;
+                            wykonawcaID = 1;
+                        }
+                    }
+                    if (NazwaWykonawcy == pusto && NazwaAlbumu == pusto && rok == pusto)
+                    {
+                        albumID = 1;
+                        wykonawcaID = 1;
+                    }
+
+
                 }
+
             }
 
-            // If this dependency object is valid, check all child dependency objects
-            return LogicalTreeHelper.GetChildren(node).OfType<DependencyObject>().All(IsValid);
+            Utwor u;
+            if (rok == pusto)
+                u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = wykonawcaID, AlbumId = albumID, Rok = "nieznany", CzyUlubione = UlubioneCheckBox.IsChecked.Value, DataDodania = DateTime.Now, UrlPath = UrlTextBox.Text };
+            else
+                u = new Utwor { Nazwa = NazwaTextBox.Text, WykonawcaId = wykonawcaID, AlbumId = albumID, Rok = RokComboBox.Text, CzyUlubione = UlubioneCheckBox.IsChecked.Value, DataDodania = DateTime.Now, UrlPath = UrlTextBox.Text };
 
-            // All dependency objects are valid
-        }
 
+            db.Add(u);
+            db.SaveChanges();
+
+
+            }
+
+        /// <summary>
+        /// Reakcja na zmianę tekstu w polu Wykonawca
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WykonawcaComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Wykonawca w = (from wyk in db.Wykonawcy
@@ -250,8 +504,10 @@ namespace BibliotekaMultimediow
                            select wyk).FirstOrDefault();
             if (w != null)
             {
+
                 var result = from a in db.Albumy
                              where a.WykonawcaId == w.WykonawcaId
+                             where a.WykonawcaId != 1
                              orderby a.Nazwa
                              select a.Nazwa;
                 AlbumComboBox.ItemsSource = result.ToArray();
@@ -261,13 +517,18 @@ namespace BibliotekaMultimediow
             else
             {
                 var result = from a in db.Albumy
+                             where a.WykonawcaId != 1
                              orderby a.Nazwa
                              select a.Nazwa;
                 AlbumComboBox.ItemsSource = result.ToArray();
-                AlbumComboBox.Text = result.FirstOrDefault();
             }
         }
 
+        /// <summary>
+        /// Reakcja na zmianę tekstu w polu Album
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AlbumComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Album a = (from alb in db.Albumy
@@ -275,11 +536,39 @@ namespace BibliotekaMultimediow
                        select alb).FirstOrDefault();
             if (a != null)
             {
-                RokComboBox.ItemsSource = new List<string> { a.Rok };
-                RokComboBox.Text = a.Rok;
+                if(a.WykonawcaId != 1)
+                {
+                    var result = from w in db.Wykonawcy
+                                 where w.WykonawcaId != 1
+                                 where w.WykonawcaId == a.WykonawcaId
+                                 select w.Nazwa;
+
+                    WykonawcaComboBox.ItemsSource = result.ToList();
+                    WykonawcaComboBox.Text = result.FirstOrDefault();
+                }
+
+                if(a.Rok == "nieznany")
+                {
+                    RokComboBox.ItemsSource = Roczniki;
+                }
+                else 
+                {
+                    RokComboBox.ItemsSource = new List<string> { a.Rok };
+                    RokComboBox.Text = a.Rok;
+                }
+               
             }
             else
             {
+                var result = from w in db.Wykonawcy
+                             where w.WykonawcaId != 1
+                             orderby w.Nazwa
+                             select w.Nazwa;
+
+                WykonawcaComboBox.ItemsSource = result.ToList();
+                
+
+
                 RokComboBox.ItemsSource = Roczniki.ToList();
                 RokComboBox.Text = Roczniki.First();
             }

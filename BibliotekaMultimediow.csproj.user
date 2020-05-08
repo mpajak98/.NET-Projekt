@@ -16,4 +16,7 @@
     <FallbackCulture>pl-PL</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartWorkingDirectory>C:\Mój komputer\Dokumenty\Studia\Semestr VI\NET_Java\C#\BibliotekaMultimediow\Bib\</StartWorkingDirectory>
+  </PropertyGroup>
 </Project>

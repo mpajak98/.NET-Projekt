@@ -29,30 +29,29 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Left Margin -->
         <Label Name="NazwaLabel" Grid.Column="0" Grid.Row="0">Nazwa:</Label>
         <TextBox Name="NazwaTextBox" Grid.Column="1" Grid.Row="0"></TextBox>
 
-        <!-- Top Margin -->
         <Label Name="WykonawcaLabel" Grid.Column="0" Grid.Row="1">Wykonawca:</Label>
         <ComboBox Name="WykonawcaComboBox" Grid.Column="1" Grid.Row="1"  IsEditable="True" TextBoxBase.TextChanged="WykonawcaComboBox_TextChanged"></ComboBox>
 
 
-        <!-- Right Margin -->
         <Label Name="AlbumLabel" Grid.Column="0" Grid.Row="2">Album:</Label>
         <ComboBox Name="AlbumComboBox" Grid.Column="1" Grid.Row="2" IsEditable="True" TextBoxBase.TextChanged="AlbumComboBox_TextChanged"></ComboBox>
         
 
-        <!-- Bottom Margin -->
         <Label Name="RokLabel" Grid.Column="0" Grid.Row="3">Rok:</Label>
         <ComboBox Name="RokComboBox" Grid.Column="1" Grid.Row="3" IsEditable="False"></ComboBox>
 
+        
+        <Label Name="UlrLabel" Grid.Column="0" Grid.Row="4">Link:</Label>
+        <TextBox Name="UrlTextBox" Grid.Column="1" Grid.Row="4"></TextBox>
 
-        <Label Name="UlubioneLabel" Grid.Column="0" Grid.Row="4">Ulubione:</Label>
-        <CheckBox Name ="UlubioneCheckBox" Grid.Column="1" Grid.Row="4"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5,0,5"></CheckBox>
 
-        <!-- Accept or Cancel -->
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right" Orientation="Horizontal">
+        <Label Name="UlubioneLabel" Grid.Column="0" Grid.Row="5">Ulubione:</Label>
+        <CheckBox Name ="UlubioneCheckBox" Grid.Column="1" Grid.Row="5"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5,0,5"></CheckBox>
+
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Name="OkButton" Click="OkButton_Click" IsDefault="True" Width="70">OK</Button>
             <Button Name="CancelButton" IsCancel="True"  Width="70">Cancel</Button>
         </StackPanel>
