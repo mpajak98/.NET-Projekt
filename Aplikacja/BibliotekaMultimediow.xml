@@ -1,0 +1,576 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BibliotekaMultimediow</name>
+    </assembly>
+    <members>
+        <member name="T:BibliotekaMultimediow.BazaDanych">
+            <summary>
+            Tabele bazy danych
+            </summary>
+            <remarks>
+            W tej klasie znajdują się tabele Utworów, Wykonawców oraz Albumów
+            </remarks>
+        </member>
+        <member name="P:BibliotekaMultimediow.BazaDanych.Utwory">
+            <value>Tabela  utworów</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.BazaDanych.Wykonawcy">
+            <value>Tabela  wykonawców</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.BazaDanych.Albumy">
+            <value>Tabela  albumów</value>
+        </member>
+        <member name="T:BibliotekaMultimediow.Utwor">
+            <summary>
+            Klasa definiująca atrybuty encji Utwór
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.UtworId">
+            <value>Zwraca, ustawia ID utworu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.Nazwa">
+            <value>Zwraca, ustawia nazwę utworu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.WykonawcaId">
+            <value>Zwraca, ustawia ID wykonawcy utworu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.AlbumId">
+            <value>Zwraca, ustawia ID albumu utworu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.CzyUlubione">
+            <value>Zwraca, ustawia czy utwór jest ulubiony</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.DataDodania">
+            <value>Zwraca, ustawia datę dodania utworu do bazy</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.Rok">
+            <value>Zwraca, ustawia rok wydania utworu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Utwor.UrlPath">
+            <value>Zwraca, ustawia link do utworu</value>
+        </member>
+        <member name="T:BibliotekaMultimediow.Wykonawca">
+            <summary>
+            Klasa definiująca atrybuty encji Wykonawca
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.Wykonawca.WykonawcaId">
+            <value>Zwraca, ustawia ID wykonawcy</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Wykonawca.Nazwa">
+            <value>Zwraca, ustawia nazwę wykonawcy</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Wykonawca.LiczbaUtworowWykonawcy">
+            <value>Zwraca, ustawia liczbę utworów przypisanych wykonawcy </value>
+        </member>
+        <member name="T:BibliotekaMultimediow.Album">
+            <summary>
+            Klasa definiująca atrybuty encji Album
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.Album.AlbumId">
+            <value>Zwraca, ustawia ID albumu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Album.Nazwa">
+            <value>Zwraca, ustawia nazwę albumu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Album.Rok">
+            <value>Zwraca, ustawia rok wydania albumu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Album.WykonawcaId">
+            <value>Zwraca, ustawia ID wykonawcy albumu</value>
+        </member>
+        <member name="P:BibliotekaMultimediow.Album.LiczbaUtworowWAlumie">
+            <value>Zwraca, ustawia liczbę utworów przypisanych albumowi </value>
+        </member>
+        <member name="T:BibliotekaMultimediow.DodajUtworWindow">
+            <summary>
+            Logika interakcji dla klasy DodajUtworWindow.xaml
+            </summary>
+            <summary>
+            DodajUtworWindow
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.#ctor">
+            <summary>
+            Konstruktor okna DodajUtworWindow
+            </summary>
+            <remarks>
+            Inicjalizuje okno oraz inicjalizuje pola z rozwijanymi listami do wpisania informacji o utworze
+            </remarks>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.WykonawcaComboBox_Init">
+            <summary>
+            Inicjalizuje listę rozwijaną do wyboru wykonawcy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.AlbumComboBox_Init">
+            <summary>
+            Inicjalizuje listę rozwijaną do wyboru albumu
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.RokComboBox_Init">
+            <summary>
+            Inicjalizuje listę rozwijaną do wyboru roku
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.CancelButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przycisku Cancel
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.OkButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przeycisku OK
+            </summary>
+            <remarks>
+            Sprawdza poprawność danych i jeśli są poprawne to dodaje utwór do bazy danych
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.DodanieUtworu">
+            <summary>
+            Sprawdza poprawność danych oraz dodaje utwór do bazy danych, jeśli dane poprawne
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.WykonawcaComboBox_TextChanged(System.Object,System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę tekstu w polu Wykonawca
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.AlbumComboBox_TextChanged(System.Object,System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę tekstu w polu Album
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.DodajUtworWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.SzukajYT">
+            <summary>
+            Logika interakcji dla klasy SzukajYT.xaml
+            </summary>
+            <summary>
+            SzukajYT
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.#ctor">
+            <summary>
+            Konstruktor okna SzukajYT
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.SzukajYT.Wynik">
+            <summary>
+            Klasa reprezentująca pojedynczy wynik wyszukiwania
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.publishedAt">
+            <summary>
+            Pełna data i godzina dodania video do serwisu YouTube
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.date">
+            <summary>
+            Sama data dodania video do serwisu YouTube
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.Title">
+            <summary>
+            Tytuł video
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.ChannelTitle">
+            <summary>
+            Nazwa kanału
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.Description">
+            <summary>
+            Opis video
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.SzukajYT.Wynik.Url">
+            <summary>
+            Link do video
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.Wynik.#ctor(Google.Apis.YouTube.v3.Data.SearchResultSnippet,Google.Apis.YouTube.v3.Data.ResourceId)">
+            <summary>
+            Konstruktor
+            </summary>
+            <param name="snip">Objekt przechowujący podstawowe dane o video</param>
+            <param name="id">ID video</param>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.Run(System.String,System.Int32)">
+            <summary>
+            Wyszukiwarka w serwisie YouTube
+            </summary>
+            <remarks>Wyniki wyszukiwania są dodawane do listy Videos </remarks>
+            <param name="ObjectName">Nazwa do wyszukania</param>
+            <param name="MaxResults">Maksymalna liczba wyników wyszukiwania</param>
+            <returns></returns>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.GetFileFromUrl(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.DodajButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przycisku Dodaj
+            </summary>
+            <remarks>Dodaje wybrany utwór do bazy danych</remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.SzukajButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przycisku Szukaj
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.SzukajYT.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.EdytujUtworWindow">
+            <summary>
+            Logika interakcji dla klasy EdytujUtworWindow.xaml
+            </summary>
+            <summary>
+            EdytujUtworWindow
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.#ctor(System.Int32)">
+            <summary>
+            Konstruktor okna EdytujUtworWindow
+            </summary>
+            <remarks>
+            <para>Inicjalizuje okno oraz inicjalizuje pola z rozwijanymi listami do edycji informacji o utworze</para> 
+            <para>Ustawieniem początkowe wartości na informacje o edytowanym utworze</para>
+            </remarks>
+            <param name="id">ID edytowanego utworu</param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.RokComboBox_Init">
+            <summary>
+            Inicjalizuje rozwijaną listę do wyboru roku
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.WykonawcaComboBox_Init">
+            <summary>
+            Inicjalizuje rozwijaną listę do wyboru wykonawcy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.AlbumComboBox_Init">
+            <summary>
+            Inicjalizuje rozwijaną listę do wyboru albumu
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.SetStartValues">
+            <summary>
+            Ustawien wartości w polach na informacje o utworze z bazy danych
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.Handlers_Init">
+            <summary>
+            Inicjalizuje uchwyty do akcji związanych ze zmianą wartości w polach
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.cancelButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przycisku Cancel
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.okButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Działanie przycisku OK
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.AktualizacjaUtworu">
+            <summary>
+            Aktualizuje edytowny utwór w bazie danych
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.NazwaTextBox_TextChanged(System.Object,System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę wartości w polu Nazwa
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.RokComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę wartości w polu Rok
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.AlbumComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę wartości w polu Album
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.WykonawcaComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę wartości w polu Wykonawca
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.UrlTextBox_TextChanged(System.Object,System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            Reakcja na zmianę wartości w polu url
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.EdytujUtworWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.MainWindow">
+            <summary>
+            Logika interakcji dla klasy MainWindow.xaml
+            </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.#ctor">
+            <summary>
+            Konstruktor okna MainWindow
+            </summary>
+            <remarks>
+            Inicjalizuje okno oraz wyświetla domyślną widok tabeli utworów
+            </remarks>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.UtworyButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Utwory
+            </summary>
+            <remarks>
+            Tworzy domyślne kolumny do wyświetlenia utworów oraz je wyświetla
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.AlbumyButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Albumy
+            </summary>
+            <remarks>
+            Tworzy domyślne kolumny do wyświetlenia albumów oraz je wyświetla
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.WykonawcyButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Wykonawcy
+            </summary>
+            <remarks>
+            Tworzy domyślne kolumny do wyświetlenia wykonawców oraz je wyświetla
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.UlubioneButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Ulubione
+            </summary>
+            <remarks>
+            Tworzy domyślne kolumny do wyświetlenia utworów oraz wyświetla te które są zaznaczone jako ulubione
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.DodajUtworButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Dodaj Utwór
+            </summary>
+            <remarks>
+            Wyświetla nowe okienko do wpisania danych nowego utworu, a następnie odświeża widok utworów
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.YouTubeSearchButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku YouTube Search
+            </summary>
+            <remarks>
+            Wyświetla nowe okienko do wyszukiwania utworów poprzez YouTube
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.EdytujButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Edytuj
+            </summary>
+            <remarks>
+            Wyświetla nowe okienko do edycji informacji o utworze
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.PokazUtworyWykonawcyButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Pokaż w widoku Wykonawcy
+            </summary>
+            <remarks>
+            Wyświetla utwory wybranego wykonawcy
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.PokazUtworyAlbumuButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Pokaż w widoku Albumy
+            </summary>
+            <remarks>
+            Wyświetla utwory wybranego albumu
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.UsunButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Funkcja wywoływana przez kliknięcie przycisku Usuń w widoku Utwory
+            </summary>
+            <remarks>
+            Usuwa wybrany utwór
+            </remarks>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.UtworyColumns_Create">
+            <summary>
+            Funkcja tworząca kolumny do wyświetlenia listy utworów
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.AlbumyColumns_Create">
+            <summary>
+            Funkcja tworząca kolumny do wyświetlenia listy albumów
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.WykonawcyColumns_Create">
+            <summary>
+            Funkcja tworząca kolumny do wyświetlenia listy wykonawców
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.EdytujButtonColumn_Create">
+            <summary>
+            Funkcja tworząca kolumnę z przyciskami Edytuj
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.UsunButtonColumn_Create">
+            <summary>
+            Funkcja tworząca kolumnę z przyciskami Usuń
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.PokazUtworyAlbumuButtonColumn_Create">
+            <summary>
+            Funkcja tworząca kolumnę z przyciskami Pokaż dla widoku Albumy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.PokazUtworyWykonawcyButtonColumn_Create">
+            <summary>
+            Funkcja tworząca kolumnę z przyciskami Pokaż dla widoku Wykonawcy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.Utwory_Refresh">
+            <summary>
+            Funkcja wyświetlająca aktualną zawartość tabeli Utwory
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.Albumy_Refresh">
+            <summary>
+            Funkcja wyświetlająca aktualną zawartość tabeli Albumy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.Wykonawcy_Refresh">
+            <summary>
+            Funkcja wyświetlająca aktualną zawartość tabeli Wykonawcy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.CheckForInternetConnection">
+            <summary>
+            Funkcja sprawdzająca połaczenie internetowe
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.LiczbaUtworowWAlbumie_Update">
+            <summary>
+            Funkcja aktualizująca liczbę utworów w albumie
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.LiczbaUtworowWykonawcy_Update">
+            <summary>
+            Funkcja aktualizująca liczbę utworów wykonawcy
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.Properties.Resources">
+            <summary>
+              Klasa zasobu wymagająca zdefiniowania typu do wyszukiwania zlokalizowanych ciągów itd.
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.Properties.Resources.ResourceManager">
+            <summary>
+            Zwraca buforowane wystąpienie ResourceManager używane przez tę klasę.
+            </summary>
+        </member>
+        <member name="P:BibliotekaMultimediow.Properties.Resources.Culture">
+            <summary>
+              Przesłania właściwość CurrentUICulture bieżącego wątku dla wszystkich
+              przypadków przeszukiwania zasobów za pomocą tej klasy zasobów wymagającej zdefiniowania typu.
+            </summary>
+        </member>
+        <member name="T:BibliotekaMultimediow.App">
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:BibliotekaMultimediow.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:BibliotekMultimediow.App">
+            <summary>
+            Logika interakcji dla klasy App.xaml
+            </summary>
+        </member>
+    </members>
+</doc>
